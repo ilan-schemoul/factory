@@ -38,3 +38,5 @@ animation = "turn"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -2 )
 shape = SubResource( 1 )
+
+[connection signal="tree_entered" from="." to="." method="_on_Object1_tree_entered"]
