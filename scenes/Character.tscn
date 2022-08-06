@@ -184,6 +184,7 @@ hframes = 10
 frame = 6
 
 [node name="Weapon" type="Node2D" parent="."]
+visible = false
 position = Vector2( 17, 15 )
 
 [node name="Sprite" type="Sprite" parent="Weapon"]

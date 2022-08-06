@@ -1,6 +1,6 @@
 extends Node2D
 
-export var waves = [{
+var waves = [{
         number_of_ennemies = 2,
         start_at = 2000,
         speed = 90,
@@ -24,15 +24,17 @@ export var waves = [{
         start_at = 15000,
         done = false
     },
+]
 
-    ]
-
+onready var DestroySound = preload("res://art/destroy.wav")
+onready var BuildingSound = preload("res://art/building.wav")
+onready var ShootingSound = preload("res://art/shooting.wav")
 onready var grid = get_node("/root/grid")
 onready var EnnemySpawn1 = $EnnemySpawn1
 onready var EnnemySpawn2 = get_node("EnnemySpawn2")
 onready var EnnemySpawn3 = get_node("EnnemySpawn3")
 
-onready var Object1 = preload("res://scenes/Object1.tscn")
+onready var Belt = preload("res://scenes/Belt.tscn")
 onready var Bullet = preload("res://scenes/Bullet.tscn")
 onready var Ennemy = preload("res://scenes/Ennemy.tscn")
 
@@ -49,7 +51,10 @@ var checked_objects = []
 func _ready():
     rng.randomize()
 
-func objects_is_destroyed():
+func belt_is_destroyed():
+    if !$Sound.is_playing():
+        $Sound.stream = DestroySound
+        $Sound.play()
     connected_assembly_line[0] = is_assembly_line_connected()
 
 var next_object_to_check = 0
@@ -81,7 +86,7 @@ func assembly_is_connected(object1, object2):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-    $Euro.text = String(money)
+    $Euro.text = "Money : " + String(money)
 
     for wave in waves:
         if not wave.done and OS.get_ticks_msec() > wave.start_at:
@@ -99,6 +104,10 @@ func _process(delta):
 
 func shoot(transform):
   if money > 0:
+    if !$Sound.is_playing():
+        $Sound.stream = ShootingSound
+        $Sound.play()
+
     var b = Bullet.instance()
     add_child(b)
     b.transform = transform
@@ -149,7 +158,12 @@ func player_builds_object(type, player_position):
         print("No more money")
         return
 
-    var new_object = Object1.instance()
+    if !$Sound.is_playing():
+        $Sound.stream = BuildingSound
+        $Sound.play()
+
+    var new_object = Belt.instance()
+    new_object.connect("destroy", self, "belt_is_destroyed")
     new_object.global_position = grid.position_snapped(player_position)
 
     for object in get_tree().get_nodes_in_group("objects"):

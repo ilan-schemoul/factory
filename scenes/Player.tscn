@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/Player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Object1.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Belt.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 31.5, 52.5 )
@@ -18,5 +18,4 @@ shape = SubResource( 1 )
 [node name="Character" parent="." instance=ExtResource( 2 )]
 
 [node name="ObjectHover" parent="." instance=ExtResource( 3 )]
-visible = false
 modulate = Color( 1, 1, 1, 0.345098 )

@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-signal destroy
+onready var EnnemySprite = preload("res://art/ennemy.png")
 
 export var run_speed = 100
 var velocity = Vector2.ZERO
@@ -8,6 +8,7 @@ var target = weakref(null)
 
 func _ready():
     $Character.get_node("Weapon").visible = false
+    $Character.get_node("Sprite").set_texture(EnnemySprite)
 
 func _physics_process(delta):
     velocity = Vector2.ZERO
@@ -38,11 +39,6 @@ func _physics_process(delta):
     # look_at(target.global_position)
     velocity = move_and_slide(velocity)
 
-func _on_DetectRadius_body_exited(body):
-    target = weakref(null)
-
 func _on_DestroyRadius_body_entered(body):
-    yield(get_tree().create_timer(1.0), "timeout")
     if is_instance_valid(body) and body.is_in_group("objects_built_by_player"):
-        body.queue_free()
-        emit_signal("destroy")
+        body.turn_around()
