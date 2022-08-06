@@ -42,3 +42,6 @@ func _physics_process(delta):
 func _on_DestroyRadius_body_entered(body):
     if is_instance_valid(body) and body.is_in_group("objects_built_by_player"):
         body.turn_around()
+        yield(get_tree().create_timer(0.8), "timeout")
+        if is_instance_valid(body):
+            body.queue_free()

@@ -4,10 +4,10 @@
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 31.5, 41 )
+extents = Vector2( 31.7501, 22.5 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 60, 40 )
+extents = Vector2( 44.157, 42.0493 )
 
 [node name="Ennemy" type="KinematicBody2D" groups=["ennemy"]]
 script = ExtResource( 2 )
@@ -15,6 +15,7 @@ script = ExtResource( 2 )
 [node name="Character" parent="." instance=ExtResource( 3 )]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -2.5002, 0.250079 )
 rotation = 1.57079
 shape = SubResource( 1 )
 
@@ -23,7 +24,7 @@ position = Vector2( -2, -1 )
 scale = Vector2( 0.786964, 0.873974 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DestroyRadius"]
-position = Vector2( 4, 0 )
+position = Vector2( 4.1298, 1.43025 )
 shape = SubResource( 3 )
 
 [connection signal="body_entered" from="DestroyRadius" to="." method="_on_DestroyRadius_body_entered"]

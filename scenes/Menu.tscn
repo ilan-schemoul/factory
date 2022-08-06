@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://art/Retro Gaming.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/Menu.gd" type="Script" id=2]
+[ext_resource path="res://art/LOOP_Trouble Afoot.wav" type="AudioStream" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -29,15 +30,17 @@ rect_pivot_offset = Vector2( 288, 160 )
 alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer2"]
-margin_top = 204.0
+margin_top = 175.0
 margin_right = 704.0
-margin_bottom = 404.0
+margin_bottom = 433.0
 custom_fonts/font = SubResource( 1 )
-text = "To build phones (which makes you money) build a belt between the rock and the delivery zone
+text = "To build phones (which makes you money) build a belt between the factory and the delivery zone
 Ennemies try to turn upside down belts (it destroys them)
-If there is no belt ennemies try to kill you
+Press 1 to select building tool press 2 to select gun
 Left click to build or shoot
-Building and shooting cost money"
+Building and shooting cost money
+If you run out of money you die
+WASD to move"
 align = 1
 valign = 1
 autowrap = true
@@ -74,5 +77,10 @@ margin_bottom = 19.0
 theme = SubResource( 2 )
 custom_fonts/font = SubResource( 3 )
 text = "START"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -6.118
+autoplay = true
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="start"]

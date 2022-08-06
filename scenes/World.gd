@@ -1,6 +1,7 @@
 extends Node2D
 
-var disable_waves = true
+onready var started_at = OS.get_ticks_msec()
+var disable_waves = false
 var waves = [{
         number_of_ennemies = 2,
         start_at = 2000,
@@ -8,21 +9,45 @@ var waves = [{
         done = false
     },
     {
-        number_of_ennemies = 1,
+        number_of_ennemies = 3,
         speed = 100,
-        start_at = 4000,
+        start_at = 5000,
         done = false
     },
     {
-        number_of_ennemies = 1,
-        speed = 110,
-        start_at = 10000,
-        done = false
-    },
-    {
-        number_of_ennemies = 1,
+        number_of_ennemies = 3,
         speed = 120,
-        start_at = 15000,
+        start_at = 12000,
+        done = false
+    },
+    {
+        number_of_ennemies = 3,
+        speed = 140,
+        start_at = 19000,
+        done = false
+    },
+    {
+        number_of_ennemies = 4,
+        speed = 140,
+        start_at = 25000,
+        done = false
+    },
+    {
+        number_of_ennemies = 5,
+        speed = 130,
+        start_at = 34000,
+        done = false
+    },
+    {
+        number_of_ennemies = 5,
+        speed = 130,
+        start_at = 43000,
+        done = false
+    },
+    {
+        number_of_ennemies = 5,
+        speed = 140,
+        start_at = 58000,
         done = false
     },
 ]
@@ -41,7 +66,8 @@ onready var Ennemy = preload("res://scenes/Ennemy.tscn")
 onready var Phone = preload("res://scenes/Phone.tscn")
 
 onready var spawns = [EnnemySpawn1, EnnemySpawn2, EnnemySpawn3]
-var money = 1000
+export var price_of_phone = 90
+export var money = 1100
 var number_of_groups_of_objects = 0
 var last_object_of_assembly_line = [$Factory]
 var connected_assembly_line = [false]
@@ -89,12 +115,23 @@ func assembly_is_connected(object1, object2):
 func _process(delta):
     $Euro.text = "Money : " + String(money)
 
+    var done = true
+    for wave in waves:
+        if not wave.done:
+            done = false
+    if done and len(get_tree().get_nodes_in_group("ennemies")) == 0:
+        $UI.get_node("won").visible = true
+        $UI.get_node("won").text = "You won with " + str(money) + " euros"
+        $UI.get_node("play_again").visible = true
+        get_tree().paused = true
+
     if not disable_waves:
         for wave in waves:
-            if not wave.done and OS.get_ticks_msec() > wave.start_at:
+            if not wave.done and OS.get_ticks_msec() - started_at > wave.start_at:
                 for i in range(wave.number_of_ennemies):
                     var ennemy_spawn_location = spawns[rng.randi_range(0, 2)].global_position
                     var new_ennemy = Ennemy.instance()
+                    new_ennemy.add_to_group("ennemies")
                     new_ennemy.run_speed = wave.speed
                     new_ennemy.connect("destroy", self, "objects_is_destroyed")
                     new_ennemy.global_position = ennemy_spawn_location
@@ -113,10 +150,10 @@ func shoot(transform):
         var b = Bullet.instance()
         add_child(b)
         b.transform = transform
-        money -= 1
+        money -= 20
   
 func play_again():
-    get_tree().paused = true
+    get_tree().paused = false
     get_tree().reload_current_scene()
 
 func get_group(object):
@@ -204,14 +241,15 @@ func check_earnings():
     money -= len(get_tree().get_nodes_in_group("objects")) - 1
     if money <= 0:
         get_tree().paused = true
-        $game_over.visible = true
+        $UI.get_node("game_over").visible = true
+        $UI.get_node("play_again").visible = true
 
 func move_phone(phone, belt):
     if phone.position.x <= belt.position.x:
         phone.position = belt.position
 
 func phone_delivered():
-    money += 100
+    money += price_of_phone
 
 var possible_next_belts = []
 

@@ -38,12 +38,14 @@ func _process(delta):
     else:
         $Character.get_node("Animation").play("RESET")
     if Input.is_action_pressed("1"):
-        emit_signal("player_mode", "building")
+        get_parent().get_node("BuildLabel").modulate.a = 1
+        get_parent().get_node("GunLabel").modulate.a = 0.5
         mode = "building"
         $ObjectHover.visible = true
         $Character.get_node("Weapon").visible = false
     if Input.is_action_pressed("2"):
-        emit_signal("player_mode", "shooting")
+        get_parent().get_node("BuildLabel").modulate.a = 0.5
+        get_parent().get_node("GunLabel").modulate.a = 1
         mode = "shooting"
         $ObjectHover.visible = false
         $Character.get_node("Weapon").visible = true

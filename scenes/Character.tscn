@@ -7,13 +7,13 @@
 resource_name = "RESET"
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Weapon:position")
+tracks/0/path = NodePath("Character/Weapon:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.6 ),
+"times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 15, 16 ) ]
@@ -29,6 +29,18 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Character/Sprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
 }
 
 [sub_resource type="Animation" id=18]
@@ -171,6 +183,7 @@ tracks/1/keys = {
 
 [node name="Animation" type="AnimationPlayer" parent="."]
 root_node = NodePath("../..")
+playback_speed = 3.0
 anims/RESET = SubResource( 13 )
 anims/running_down = SubResource( 18 )
 anims/running_left = SubResource( 16 )
@@ -181,11 +194,10 @@ anims/running_up = SubResource( 19 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 2 )
 hframes = 10
-frame = 6
 
 [node name="Weapon" type="Node2D" parent="."]
 visible = false
-position = Vector2( 17, 15 )
+position = Vector2( 15, 16 )
 
 [node name="Sprite" type="Sprite" parent="Weapon"]
 position = Vector2( -1, 0 )
