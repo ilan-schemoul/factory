@@ -3,20 +3,24 @@ extends Node2D
 export var waves = [{
         number_of_ennemies = 2,
         start_at = 2000,
+        speed = 90,
         done = false
     },
     {
         number_of_ennemies = 2,
+        speed = 100,
         start_at = 4000,
         done = false
     },
     {
         number_of_ennemies = 5,
+        speed = 110,
         start_at = 10000,
         done = false
     },
     {
         number_of_ennemies = 6,
+        speed = 120,
         start_at = 15000,
         done = false
     },
@@ -84,6 +88,7 @@ func _process(delta):
             for i in range(wave.number_of_ennemies):
                 var ennemy_spawn_location = spawns[rng.randi_range(0, 2)].global_position
                 var new_ennemy = Ennemy.instance()
+                new_ennemy.run_speed = wave.speed
                 new_ennemy.connect("destroy", self, "objects_is_destroyed")
                 new_ennemy.global_position = ennemy_spawn_location
                 new_ennemy.global_position.x += rng.randf_range(-60, 60)

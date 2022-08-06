@@ -2,9 +2,12 @@ extends KinematicBody2D
 
 signal destroy
 
-export var run_speed = 150
+export var run_speed = 100
 var velocity = Vector2.ZERO
 var target = weakref(null)
+
+func _ready():
+    $Character.get_node("Weapon").visible = false
 
 func _physics_process(delta):
     velocity = Vector2.ZERO
@@ -21,7 +24,18 @@ func _physics_process(delta):
         target = nearest_object
 
     velocity = position.direction_to(target.position) * run_speed
-    look_at(target.global_position)
+    if velocity.x >= velocity.y:
+        if velocity.x >= 0:
+            $Character.get_node("Animation").play("running_right")
+        elif velocity.x <= 0:
+            $Character.get_node("Animation").play("running_left")
+    else:
+        if velocity.y >= 0:
+            $Character.get_node("Animation").play("running_down")
+        elif velocity.y <= 0:
+                $Character.get_node("Animation").play("running_up")
+
+    # look_at(target.global_position)
     velocity = move_and_slide(velocity)
 
 func _on_DetectRadius_body_exited(body):

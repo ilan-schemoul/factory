@@ -20,27 +20,33 @@ func _process(delta):
     var pos_on_grid = grid.position_snapped(global_position)
     $ObjectHover.global_position = pos_on_grid
 
-    $Weapon.look_at(get_global_mouse_position())
+    $Character.get_node("Weapon").look_at(get_global_mouse_position())
 
     var velocity = Vector2.ZERO # The player's movement vector.
     if Input.is_action_pressed("move_right"):
         velocity.x += 1
-    if Input.is_action_pressed("move_left"):
+        $Character.get_node("Animation").play("running_right")
+    elif Input.is_action_pressed("move_left"):
         velocity.x -= 1
-    if Input.is_action_pressed("move_down"):
+        $Character.get_node("Animation").play("running_left")
+    elif Input.is_action_pressed("move_down"):
         velocity.y += 1
-    if Input.is_action_pressed("move_up"):
+        $Character.get_node("Animation").play("running_down")
+    elif Input.is_action_pressed("move_up"):
         velocity.y -= 1
+        $Character.get_node("Animation").play("running_up")
+    else:
+        $Character.get_node("Animation").play("RESET")
     if Input.is_action_pressed("1"):
         emit_signal("player_mode", "building")
         mode = "building"
         $ObjectHover.visible = true
-        $Weapon.visible = false
+        $Character.get_node("Weapon").visible = false
     if Input.is_action_pressed("2"):
         emit_signal("player_mode", "shooting")
         mode = "shooting"
         $ObjectHover.visible = false
-        $Weapon.visible = true
+        $Character.get_node("Weapon").visible = true
     if Input.is_action_pressed("click"):
         if mode == "building":
             if OS.get_ticks_msec() - last_object_built_at > interval_between_building:
@@ -48,7 +54,7 @@ func _process(delta):
                 last_object_built_at = OS.get_ticks_msec()
         elif mode == "shooting":
             if OS.get_ticks_msec() - last_shot_at > interval_between_shots:
-                emit_signal("shoot", $Weapon.global_transform)
+                emit_signal("shoot", $Character.get_node("Weapon").global_transform)
                 last_shot_at = OS.get_ticks_msec()
 
     if velocity.length() > 0:
