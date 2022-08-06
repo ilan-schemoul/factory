@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 export var speed = 400 # How fast the player will move (pixels/sec).
-export var interval_between_building = 500
+export var interval_between_building = 10
 export var interval_between_shots = 200
 
 signal build_object(type, player_position)
